@@ -39,9 +39,42 @@ class Movie(db.Model):
     year = db.Column(db.Integer)
     description = db.Column(db.Text)
     rating = db.Column(db.Float)
+    price = db.Column(db.Integer)
     poster = db.Column(db.String(255))
     trailer_url = db.Column(db.String(255), nullable=False)
     genre = db.Column(db.String(50))
+
+
+    def serialize(self):
+        return{
+            'id': self.id,
+            'title': self.title,
+            'year': self.year,
+            'description': self.description,
+            'rating': self.rating,
+            'price': self.price,
+            'poster': self.poster,
+            'trailer_url': self.trailer_url,
+            'genre': self.genre
+        }
+
+class Nowshowing (db.Model):
+    __tablename__ = 'Nowshowing'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    year = db.Column(db.Integer)
+    description = db.Column(db.Text)
+    rating = db.Column(db.Float)
+    poster = db.Column(db.String(255))
+    rating = db.Column(db.Integer)
+    trailer_url = db.Column(db.String(255), nullable=False)
+    runtime = db.Column(db.Integer)
+    genre = db.Column(db.String(50))
+    price = db.Column(db.Integer)
+    seats = db.Column(db.String)
+ 
+   
 
     def serialize(self):
         return{
@@ -51,24 +84,13 @@ class Movie(db.Model):
             'description': self.description,
             'rating': self.rating,
             'poster': self.poster,
+            'rating': self.rating,
             'trailer_url': self.trailer_url,
-            'genre': self.genre
-        }
-
-class Nowshowing(db.Model):
-    __tablename__ = 'Nowshowing'
-
-    id = db.Column(db.Integer, primary_key=True)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
-    runtime = db.Column(db.Integer)
-
-    # Define the one-to-one relationship with Movie
-    movie = db.relationship('Movie', backref='nowshowing')
-
-    def serialize(self):
-        return{
-            'id': self.id,
-            'movie_id': self.movie_id,
             'runtime': self.runtime,
+            'genre': self.genre,
+            'seats': self.seats,
+            'price': self.price
+            }
+    
             # You can include other attributes from Movie if needed
-        }
+        
