@@ -58,8 +58,8 @@ class Movie(db.Model):
             'genre': self.genre
         }
 
-class Nowshowing (db.Model):
-    __tablename__ = 'Nowshowing'
+class Ontheatre (db.Model):
+    __tablename__ = 'Ontheatre'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
