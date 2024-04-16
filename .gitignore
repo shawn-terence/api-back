@@ -1,0 +1,5 @@
+# Ignore virtual environment files
+/.venv
+/.venv/
+Pipfile
+Pipfile.lock
