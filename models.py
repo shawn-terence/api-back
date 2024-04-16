@@ -31,7 +31,7 @@ class User(db.Model):
             'password': self.password
         }
 
-class Movie(db.Model):
+class Movies(db.Model):
     __tablename__ = 'movies'
 
     id = db.Column(db.Integer, primary_key=True)
