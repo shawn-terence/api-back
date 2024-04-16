@@ -44,7 +44,6 @@ class Movie(db.Model):
     trailer_url = db.Column(db.String(255), nullable=False)
     genre = db.Column(db.String(50))
 
-
     def serialize(self):
         return{
             'id': self.id,
@@ -58,39 +57,34 @@ class Movie(db.Model):
             'genre': self.genre
         }
 
-class Ontheatre (db.Model):
+class Ontheatre(db.Model):
     __tablename__ = 'Ontheatre'
 
     id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    runtime = db.Column(db.Integer)
+    seats = db.Column(db.String)
     title = db.Column(db.String)
     year = db.Column(db.Integer)
     description = db.Column(db.Text)
-    rating = db.Column(db.Float)
-    poster = db.Column(db.String(255))
-    rating = db.Column(db.Integer)
-    trailer_url = db.Column(db.String(255), nullable=False)
-    runtime = db.Column(db.Integer)
-    genre = db.Column(db.String(50))
-    price = db.Column(db.Integer)
-    seats = db.Column(db.String)
- 
-   
+    rating_theater = db.Column(db.Float)
+    poster_theater = db.Column(db.String(255))
+    trailer_url_theater = db.Column(db.String(255), nullable=False)
+    genre_theater = db.Column(db.String(50))
+    price_theater = db.Column(db.Integer)
 
     def serialize(self):
         return{
             'id': self.id,
+            'movie_id': self.movie_id,
+            'runtime': self.runtime,
+            'seats': self.seats,
             'title': self.title,
             'year': self.year,
             'description': self.description,
-            'rating': self.rating,
-            'poster': self.poster,
-            'rating': self.rating,
-            'trailer_url': self.trailer_url,
-            'runtime': self.runtime,
-            'genre': self.genre,
-            'seats': self.seats,
-            'price': self.price
-            }
-    
-            # You can include other attributes from Movie if needed
-        
+            'rating_theater': self.rating_theater,
+            'poster_theater': self.poster_theater,
+            'trailer_url_theater': self.trailer_url_theater,
+            'genre_theater': self.genre_theater,
+            'price_theater': self.price_theater
+        }
