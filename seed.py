@@ -8,6 +8,7 @@ db.init_app(app)
 
 def seed_data():
     with app.app_context():
+
         print("Seeding Movies")
 
         movies_data = [
@@ -22,5 +23,57 @@ def seed_data():
 
         db.session.commit()
         print("Movies seeded successfully")
+
+        print("Ontheatre_movies")
+
+        ontheatre_data =[
+            {""}
+        ]
+
+        
+
+
+        print("Ontheatre_movies seeded successfully")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if __name__ == "__main__":
+          seed_data()
 
 

@@ -62,9 +62,9 @@ class Ontheatre(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
-    runtime = db.Column(db.Integer)
-    seats = db.Column(db.String)
     title = db.Column(db.String)
+    runtime = db.Column(db.Integer)
+    seats = db.Column(db.String) # 1,2,3,4,5,6,7,8,9,10 (lEAVE FOR)
     year = db.Column(db.Integer)
     description = db.Column(db.Text)
     rating_theater = db.Column(db.Float)
