@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+</head>
+<body>
+    <h1>Movies</h1>
+    <ul>
+        {% for movie in movies %}
+        <li>
+            <h2>{{ movie.title }}</h2>
+            <p>{{ movie.description }}</p>
+            
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h1>On Theater</h1>
+    <ul>
+        {% for theater_data in on_theater_data %}
+        <li>
+            <h2>{{ theater_data.title }}</h2>
+            <p>{{ theater_data.description }}</p>
+            <!-- Add more theater details as needed -->
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

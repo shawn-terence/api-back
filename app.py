@@ -2,10 +2,11 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity,create_access_token
 from flask_migrate import Migrate
-from models import db, User
+from models import db, User,Movies,Ontheatre
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import jwt
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flickfusion.db'
@@ -59,6 +60,65 @@ def protected():
         return jsonify({'message': f'Hello, {user.username}'}), 200
     else:
         return jsonify({'message': 'User not found'}), 404
+    
+from flask import render_template
+
+@app.route('/')
+def index():
+    return f"Welcome to Flick Fusion API"
+
+    
+@app.route('/movies', methods=['GET'])
+def get_movies():
+    movies = Movies.query.all()
+    return jsonify([movie.serialize() for movie in movies])
+
+@app.route('/movies/<int:movie_id>', methods=['GET'])
+def get_movie(movie_id):
+    movie = Movies.query.get(movie_id)
+    if movie:
+        return jsonify(movie.serialize())
+    else:
+        return jsonify({"error": "Movie not found"}), 404
+    
+@app.route('/ontheatre', methods=['GET'])
+def get_ontheatre():
+    ontheatre = Ontheatre.query.all()
+    return jsonify([ontheatre_item.serialize() for ontheatre_item in ontheatre])
+
+@app.route('/ontheatre/<int:ontheatre_id>', methods=['GET'])
+def get_ontheatre_by_id_endpoint(ontheatre_id):
+    ontheatre = Ontheatre.query.get(ontheatre_id)
+    if ontheatre:
+        return jsonify(ontheatre.serialize())
+    else:
+        return jsonify({"error": "Ontheatre movies not found"}), 404
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     with app.app_context():
