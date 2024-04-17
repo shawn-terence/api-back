@@ -1,17 +1,50 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+import jwt
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flickfusion.db' 
 
-db = SQLAlchemy()
-# Define set_password, check_password, and generate_token methods
-
+db = SQLAlchemy(app)
 
 # Define the association table for the many-to-many relationship between User and Movie
 user_movie_association = db.Table('user_movie_association',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
     db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'), primary_key=True)
 )
+
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String)
+    gmail = db.Column(db.String)
+    password = db.Column(db.String)
+
+    favorite_movies = db.relationship('Movies', secondary=user_movie_association, backref='fans')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'gmail': self.gmail,
+            'password': self.password
+        }
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def generate_token(self):
+        payload = {
+            'user_id': self.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token expiration time
+        }
+        return jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
 
 class Movies(db.Model):
     __tablename__ = 'movies'
@@ -38,9 +71,6 @@ class Movies(db.Model):
             'trailer_url': self.trailer_url,
             'genre': self.genre
         }
-
-    fans = db.relationship('User', secondary=user_movie_association, back_populates='movies')
-
 
 class Ontheatre(db.Model):
     __tablename__ = 'Ontheatre'
@@ -73,35 +103,3 @@ class Ontheatre(db.Model):
             'genre_theater': self.genre_theater,
             'price_theater': self.price_theater
         }
-
-
-class User(db.Model):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
-    gmail = db.Column(db.String)
-    password = db.Column(db.String)
-
-    movies = db.relationship('Movies', secondary=user_movie_association, back_populates='fans')
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'gmail': self.gmail,
-            'password': self.password
-        }
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
-    def generate_token(self):
-        payload = {
-            'user_id': self.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token expiration time
-        }
-        return jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')

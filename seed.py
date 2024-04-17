@@ -1,5 +1,5 @@
 from app import app
-from models import User, Movies, Ontheatre,db
+from models import User, Movies, Ontheatre, db
 
 def seed_data():
     # Delete existing data from tables
