@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+import jwt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flickfusion.db' 
@@ -20,16 +23,28 @@ class User(db.Model):
     gmail = db.Column(db.String)
     password = db.Column(db.String)
 
-    # Define the relationship with Movie
-    favorite_movies = db.relationship('Movie', secondary=user_movie_association, backref='fans')
+    favorite_movies = db.relationship('Movies', secondary=user_movie_association, backref='fans')
 
     def serialize(self):
-        return{
+        return {
             'id': self.id,
             'username': self.username,
             'gmail': self.gmail,
             'password': self.password
         }
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def generate_token(self):
+        payload = {
+            'user_id': self.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token expiration time
+        }
+        return jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
 
 class Movies(db.Model):
     __tablename__ = 'movies'
@@ -45,7 +60,7 @@ class Movies(db.Model):
     genre = db.Column(db.String(50))
 
     def serialize(self):
-        return{
+        return {
             'id': self.id,
             'title': self.title,
             'year': self.year,
@@ -74,7 +89,7 @@ class Ontheatre(db.Model):
     price_theater = db.Column(db.Integer)
 
     def serialize(self):
-        return{
+        return {
             'id': self.id,
             'movie_id': self.movie_id,
             'runtime': self.runtime,
