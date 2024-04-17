@@ -1,4 +1,4 @@
-#!/home/alegnowmiliwgn/moringa/phase4/projects/FlickFusion_Backend/venv/bin/python
+#!/home/user/Desktop/FlickFusion_Backend/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
