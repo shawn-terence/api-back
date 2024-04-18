@@ -109,7 +109,18 @@ def book_seat(ontheatre_id, seat):
         return jsonify({'message': f'Seat {seat} booked successfully'}), 200
     else:
         return jsonify({'message': f'Seat {seat} is already booked'}), 409
+@app.route('/ontheatre/<int:ontheatre_id>/seats', methods=['GET'])
+def get_available_seats(ontheatre_id):
+    ontheatre = Ontheatre.query.get(ontheatre_id)
 
+    if not ontheatre:
+        return jsonify({'message': 'Ontheatre not found'}), 404
+
+    available_seats = ontheatre.get_available_seats()
+    
+    return jsonify({
+        'available_seats': available_seats
+    }), 200
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
