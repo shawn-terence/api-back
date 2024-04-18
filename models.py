@@ -73,7 +73,7 @@ class Movies(db.Model):
         }
 
 class Ontheatre(db.Model):
-    __tablename__ = 'Ontheatre'
+    _tablename_ = 'Ontheatre'
 
     id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
@@ -87,6 +87,7 @@ class Ontheatre(db.Model):
     trailer_url_theater = db.Column(db.String(255), nullable=False)
     genre_theater = db.Column(db.String(50))
     price_theater = db.Column(db.Integer)
+    booked_seats = db.Column(db.String,default='')
 
     def serialize(self):
         return {
@@ -101,5 +102,24 @@ class Ontheatre(db.Model):
             'poster_theater': self.poster_theater,
             'trailer_url_theater': self.trailer_url_theater,
             'genre_theater': self.genre_theater,
-            'price_theater': self.price_theater
+            'price_theater': self.price_theater,
+            'booked_seats': self.booked_seats.split(',')
         }
+    
+    def get_available_seats(self):
+        all_seats = self.seats.split(',')
+        booked_seats = self.booked_seats.split(',')
+        available_seats = [seat for seat in all_seats if seat not in booked_seats]
+        return available_seats
+
+    def book_seat(self, seat):
+        available_seats = self.get_available_seats()
+        
+        if seat in available_seats:
+            booked_seats_list = self.booked_seats.split(',')
+            if seat not in booked_seats_list:
+                booked_seats_list.append(seat)
+                self.booked_seats = ','.join(booked_seats_list)
+                db.session.commit()
+                return True
+        return False
