@@ -18,8 +18,6 @@ jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
 
-
-
 def check_password(user, password):
     return check_password_hash(user.password, password)
     
@@ -93,35 +91,22 @@ def get_ontheatre_by_id_endpoint(ontheatre_id):
         return jsonify(ontheatre.serialize())
     else:
         return jsonify({"error": "Ontheatre movies not found"}), 404
-
-
-
-
-
-
-
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/book_seat/<int:ontheatre_id>/<string:seat>', methods=['POST'])
+@jwt_required()
+def book_seat(ontheatre_id, seat):
+    ontheatre = Ontheatre.query.get(ontheatre_id)
+    
+    if not ontheatre:
+        return jsonify({'message': 'Ontheatre not found'}), 404
+    
+    if ontheatre.book_seat(seat):
+        return jsonify({'message': f'Seat {seat} booked successfully'}), 200
+    else:
+        return jsonify({'message': f'Seat {seat} is already booked'}), 409
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    
+
     app.run(debug=True)
