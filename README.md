@@ -24,6 +24,16 @@ Provide instructions on how to install and set up your backend project. Include 
 
 ## API DOCUMENTATION
 
+-JWT authentication
+  -We used jwt authentication to authenticate users
+  -The was a protected route where logged in in users will be redirected to while the unprotected route was used for the users who did not have one.
+
+-Routes
+ -/movies route
+    -This route was used to redirect users to the movies page where they will be able to but movies
+ -/Ontheatre route
+    -This route was used to redirect users to to the page where it shows if movies are being show in the cinema as well as where they can book.
+
 - GET /api/users
   - Description: Get a list of all users.
   - Request: None
