@@ -133,7 +133,7 @@ def seed_data():
       
 
 # Call the seed_data function to seed the data
-if __name__ == "_main_":
+if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         seed_data()
