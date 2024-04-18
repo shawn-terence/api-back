@@ -6,12 +6,17 @@ from models import db, User,Movies,Ontheatre
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import jwt
+from flask_cors import CORS
+
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flickfusion.db'
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+CORS(app)
+CORS(app, origins=['http://localhost:5173'])
 
 db.init_app(app)
 jwt = JWTManager(app)
