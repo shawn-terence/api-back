@@ -16,7 +16,7 @@ app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
-CORS(app, origins=['http://localhost:5173'])
+CORS(app, origins=['http://localhost:5173','flick-fusion-frontend.vercel.app'])
 
 db.init_app(app)
 jwt = JWTManager(app)
