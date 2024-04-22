@@ -16,7 +16,7 @@ app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
-CORS(app, origins=['http://localhost:5173','https://vercel.com/terences-projects-760b070e/api-front/Bn1gFz6mPJcJ442BHfqhWWkuP4my'])
+CORS(app, origins=['http://localhost:5173','https://api-front-eight.vercel.app/'])
 
 db.init_app(app)
 jwt = JWTManager(app)
