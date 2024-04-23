@@ -12,7 +12,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flickfusion.db'
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'  
+app.config['JWT_SECRET_KEY'] = 'j2D7Ku4aF8Rn'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
